@@ -17,7 +17,6 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "curso")
-    @JoinColumn(name = "topicos_id")
-    private List<Topico> topicos;
+    private String nome;
+    private Categoria categoria;
 }
