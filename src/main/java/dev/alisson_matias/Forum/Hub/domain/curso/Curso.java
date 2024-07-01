@@ -1,10 +1,8 @@
 package dev.alisson_matias.Forum.Hub.domain.curso;
 
-import dev.alisson_matias.Forum.Hub.domain.topico.Topico;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity(name = "Curso")
 @Table(name = "cursos")
@@ -18,5 +16,5 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private Categoria categoria;
+    private String categoria;
 }

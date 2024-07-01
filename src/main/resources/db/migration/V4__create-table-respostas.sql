@@ -4,7 +4,7 @@ create table respostas(
     autor_id bigint not null,
     data_de_criacao TIMESTAMP not null,
     topico_id bigint,
-    solucao enum("SEM_RESPOSTA","RESPONDIDO", "CONCLUIDO"),
+    solucao varchar(100),
     FOREIGN KEY (autor_id) REFERENCES usuarios(id),
     FOREIGN KEY (topico_id) REFERENCES topicos(id) ON DELETE CASCADE,
     primary key(id)

@@ -15,6 +15,9 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     public Perfil(Usuario usuario) {
         this.id = usuario.getId();

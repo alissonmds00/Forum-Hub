@@ -1,6 +1,6 @@
-package dev.alisson_matias.Forum.Hub.domain.topico;
+package dev.alisson_matias.Forum.Hub.domain.resposta;
 
-import dev.alisson_matias.Forum.Hub.domain.usuario.Perfil;
+import dev.alisson_matias.Forum.Hub.domain.topico.Topico;
 import dev.alisson_matias.Forum.Hub.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
