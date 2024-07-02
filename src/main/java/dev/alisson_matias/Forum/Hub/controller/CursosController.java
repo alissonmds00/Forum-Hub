@@ -1,8 +1,10 @@
 package dev.alisson_matias.Forum.Hub.controller;
 
-import dev.alisson_matias.Forum.Hub.domain.curso.*;
+import dev.alisson_matias.Forum.Hub.domain.curso.CursoRepository;
+import dev.alisson_matias.Forum.Hub.domain.curso.DadosCadastramentoCurso;
+import dev.alisson_matias.Forum.Hub.domain.curso.DadosDetalhamentoCurso;
+import dev.alisson_matias.Forum.Hub.domain.curso.RegistrarCurso;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,22 +13,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cursos")
 public class CursosController {
 
-    @Autowired
-    private RegistrarCurso registrarCurso;
+    private final RegistrarCurso registrarCurso;
+    private final CursoRepository repository;
 
-    @Autowired
-    private CursoRepository repository;
+    public CursosController(RegistrarCurso registrarCurso, CursoRepository cursoRepository) {
+        this.registrarCurso = registrarCurso;
+        this.repository = cursoRepository;
+    }
 
     @PostMapping()
     @Transactional
-    public ResponseEntity cadastrarCurso(@RequestBody @Valid DadosCadastramentoCurso dados) {
+    public ResponseEntity<DadosDetalhamentoCurso> cadastrarCurso(@RequestBody @Valid DadosCadastramentoCurso dados) {
         System.out.println(dados);
         var curso = registrarCurso.registrarNovoCurso(dados);
         return ResponseEntity.ok(new DadosDetalhamentoCurso(curso));

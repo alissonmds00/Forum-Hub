@@ -13,15 +13,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CadastramentoDeUsuario cadastramentoDeUsuario;
 
     @Autowired
-    private CadastramentoDeUsuario cadastramentoDeUsuario;
-
+    public UsuarioController(UsuarioRepository usuarioRepository, CadastramentoDeUsuario cadastramentoDeUsuario) {
+        this.usuarioRepository = usuarioRepository;
+        this.cadastramentoDeUsuario = cadastramentoDeUsuario;
+    }
 
     @PostMapping
-    public ResponseEntity cadastrarUsuario(@RequestBody @Valid DadosCadastramentoUsuario dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DadosDetalhamentoUsuario> cadastrarUsuario(@RequestBody @Valid DadosCadastramentoUsuario dados, UriComponentsBuilder uriBuilder) {
         var usuario = cadastramentoDeUsuario.cadastrar(dados);
         var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         usuarioRepository.save(usuario);
