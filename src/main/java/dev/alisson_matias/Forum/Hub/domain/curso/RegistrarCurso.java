@@ -5,8 +5,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrarCurso {
+
+    private final CursoRepository repository;
+
     @Autowired
-    private CursoRepository repository;
+    public RegistrarCurso(CursoRepository repository) {
+        this.repository = repository;
+    }
 
     public Curso registrarNovoCurso(DadosCadastramentoCurso dados) {
         var curso = new Curso(null, dados.nome(), dados.categoria().toString());

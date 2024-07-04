@@ -21,14 +21,12 @@ public class TopicosController {
     private final TopicoRepository repository;
     private final RegistroDeTopico registroDeTopico;
     private final TokenService tokenService;
-    private final UsuarioRepository usuarioRepository;
 
     @Autowired
-    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService, UsuarioRepository usuarioRepository) {
+    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService) {
         this.repository = repository;
         this.registroDeTopico = registroDeTopico;
         this.tokenService = tokenService;
-        this.usuarioRepository = usuarioRepository;
     }
 
     @PostMapping
