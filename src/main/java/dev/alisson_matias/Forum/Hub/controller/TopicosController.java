@@ -1,7 +1,10 @@
 package dev.alisson_matias.Forum.Hub.controller;
 
 import dev.alisson_matias.Forum.Hub.domain.topico.*;
+import dev.alisson_matias.Forum.Hub.domain.usuario.UsuarioRepository;
 import dev.alisson_matias.Forum.Hub.infra.exception.ValidacaoException;
+import dev.alisson_matias.Forum.Hub.infra.security.DadosTokenJWT;
+import dev.alisson_matias.Forum.Hub.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,17 +20,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class TopicosController {
     private final TopicoRepository repository;
     private final RegistroDeTopico registroDeTopico;
+    private final TokenService tokenService;
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
-    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico) {
+    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.repository = repository;
         this.registroDeTopico = registroDeTopico;
+        this.tokenService = tokenService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoTopico> criarTopico(@RequestBody @Valid DadosCadastramentoTopico dados, UriComponentsBuilder uriBuilder) {
-        var topico = registroDeTopico.criarNovoTopico(dados);
+    public ResponseEntity<DadosDetalhamentoTopico> criarTopico(@RequestBody @Valid DadosCadastramentoTopico dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String tokenJWT) {
+        var emailAutor = tokenService.getSubject(new DadosTokenJWT(tokenJWT).token());
+        var topico = registroDeTopico.criarNovoTopico(dados, emailAutor);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoTopico(topico));
     }

@@ -17,15 +17,12 @@ public class RegistroDeTopico {
     @Autowired
     private TopicoRepository topicoRepository;
 
-    public Topico criarNovoTopico(DadosCadastramentoTopico dados) {
+    public Topico criarNovoTopico(DadosCadastramentoTopico dados, String emailAutor) {
         if (cursoRepository.getReferenceById(dados.idCurso()) == null) {
             throw new ValidacaoException("Não foi possível encontrar o curso informado");
         }
-        if (usuarioRepository.getReferenceById(dados.idAutor()) == null) {
-            throw new ValidacaoException("O usuário não é válido");
-        }
         var curso = cursoRepository.getReferenceById(dados.idCurso());
-        var autor = usuarioRepository.getReferenceById(dados.idAutor());
+        var autor = usuarioRepository.findByEmail(emailAutor);
         var topico = new Topico(dados.titulo(), dados.mensagem(), autor, curso);
         topicoRepository.save(topico);
         return topico;

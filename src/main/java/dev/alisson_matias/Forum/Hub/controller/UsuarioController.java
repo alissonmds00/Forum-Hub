@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/registrar")
 public class UsuarioController {
     private final UsuarioRepository usuarioRepository;
     private final CadastramentoDeUsuario cadastramentoDeUsuario;

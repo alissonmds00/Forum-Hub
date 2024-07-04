@@ -1,5 +1,6 @@
 package dev.alisson_matias.Forum.Hub.domain.usuario;
 
+import dev.alisson_matias.Forum.Hub.infra.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
