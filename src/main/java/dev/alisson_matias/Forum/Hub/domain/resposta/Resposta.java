@@ -25,5 +25,14 @@ public class Resposta {
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Usuario autor;
-    private Solucao solucao;
+    private String solucao;
+
+    public Resposta(String conteudo, Topico topico, Usuario autor) {
+        this.id = null;
+        this.conteudo = conteudo;
+        this.topico = topico;
+        this.dataDeCriacao = LocalDateTime.now();
+        this.autor = autor;
+        this.solucao = Solucao.SEM_RESPOSTA.toString();
+    }
 }

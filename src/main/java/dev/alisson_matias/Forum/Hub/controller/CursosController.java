@@ -37,11 +37,7 @@ public class CursosController {
 
     @GetMapping
     public ResponseEntity<Page<DadosDetalhamentoCurso>> listarPacientesAtivos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pagina)  {
-        var cursosPaginacao = repository.findAll(pagina);
-        var cursosDto = cursosPaginacao.stream()
-                .map(DadosDetalhamentoCurso::new)
-                .collect(Collectors.toList());
-        var cursos = new PageImpl<>(cursosDto, pagina, cursosPaginacao.getTotalElements());
+        var cursos = repository.findAll(pagina).map(DadosDetalhamentoCurso::new);
         return ResponseEntity.ok(cursos);
     }
 }

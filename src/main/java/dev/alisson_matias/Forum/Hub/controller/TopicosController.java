@@ -1,7 +1,10 @@
 package dev.alisson_matias.Forum.Hub.controller;
 
+import dev.alisson_matias.Forum.Hub.domain.resposta.DadosCadastramentoResposta;
+import dev.alisson_matias.Forum.Hub.domain.resposta.DadosDetalhamentoResposta;
+import dev.alisson_matias.Forum.Hub.domain.resposta.RegistrarResposta;
+import dev.alisson_matias.Forum.Hub.domain.resposta.RespostaRepository;
 import dev.alisson_matias.Forum.Hub.domain.topico.*;
-import dev.alisson_matias.Forum.Hub.domain.usuario.UsuarioRepository;
 import dev.alisson_matias.Forum.Hub.infra.exception.ValidacaoException;
 import dev.alisson_matias.Forum.Hub.infra.security.DadosTokenJWT;
 import dev.alisson_matias.Forum.Hub.infra.security.TokenService;
@@ -21,12 +24,16 @@ public class TopicosController {
     private final TopicoRepository repository;
     private final RegistroDeTopico registroDeTopico;
     private final TokenService tokenService;
+    private final RespostaRepository respostaRepository;
+    private final RegistrarResposta registroDeResposta;
 
     @Autowired
-    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService) {
+    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService, RespostaRepository respostaRepository, RegistrarResposta registroDeResposta) {
         this.repository = repository;
         this.registroDeTopico = registroDeTopico;
+        this.respostaRepository = respostaRepository;
         this.tokenService = tokenService;
+        this.registroDeResposta = registroDeResposta;
     }
 
     @PostMapping
@@ -84,5 +91,20 @@ public class TopicosController {
         } catch (Exception e) {
             throw new ValidacaoException("O tópico não foi encontrado.");
         }
+    }
+
+    @PostMapping("{id}/respostas")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoResposta> registrarResposta(@PathVariable Long id, @RequestBody DadosCadastramentoResposta dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token) {
+        var resposta = registroDeResposta.registrarResposta(id, dados.conteudo(), token);
+        var uri = uriBuilder.path("/topicos/{idTopico}/resposta{idResposta}").buildAndExpand(id, resposta.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
+    }
+
+    @GetMapping("{idTopico}/respostas")
+    public ResponseEntity<Page<DadosDetalhamentoResposta>> obterRespostasDoTopico(@PageableDefault Pageable page, @PathVariable Long idTopico) {
+        var respostas = respostaRepository.buscarRespostasDoTopico(page, idTopico).map(DadosDetalhamentoResposta::new);
+        System.out.println(respostas);
+        return ResponseEntity.ok(respostas);
     }
 }
