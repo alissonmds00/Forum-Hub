@@ -33,7 +33,7 @@ public class CursosController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoCurso>> listarCurso(@PageableDefault(size = 10, sort = {"nome"}) Pageable pagina)  {
+    public ResponseEntity<Page<DadosDetalhamentoCurso>> listarCurso(@PageableDefault(sort = {"nome"}) Pageable pagina)  {
         var cursos = repository.findAll(pagina).map(DadosDetalhamentoCurso::new);
         return ResponseEntity.ok(cursos);
     }

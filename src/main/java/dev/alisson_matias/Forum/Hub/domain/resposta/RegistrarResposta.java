@@ -1,6 +1,5 @@
 package dev.alisson_matias.Forum.Hub.domain.resposta;
 
-import dev.alisson_matias.Forum.Hub.domain.curso.CursoRepository;
 import dev.alisson_matias.Forum.Hub.domain.topico.TopicoRepository;
 import dev.alisson_matias.Forum.Hub.domain.usuario.UsuarioRepository;
 import dev.alisson_matias.Forum.Hub.infra.exception.ValidacaoException;
