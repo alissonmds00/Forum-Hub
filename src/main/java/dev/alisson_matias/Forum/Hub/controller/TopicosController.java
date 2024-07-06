@@ -8,6 +8,7 @@ import dev.alisson_matias.Forum.Hub.domain.topico.*;
 import dev.alisson_matias.Forum.Hub.infra.exception.ValidacaoException;
 import dev.alisson_matias.Forum.Hub.infra.security.DadosTokenJWT;
 import dev.alisson_matias.Forum.Hub.infra.security.TokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/topicos")
 public class TopicosController {
     private final TopicoRepository repository;

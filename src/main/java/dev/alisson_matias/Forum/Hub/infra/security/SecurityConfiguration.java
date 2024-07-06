@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST,"/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/registrar").permitAll();
+                    req.requestMatchers("/swagger-ui.html","/v3/api-docs/**", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -46,4 +47,5 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

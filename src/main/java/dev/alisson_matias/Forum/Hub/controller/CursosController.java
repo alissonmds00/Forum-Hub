@@ -4,6 +4,7 @@ import dev.alisson_matias.Forum.Hub.domain.curso.CursoRepository;
 import dev.alisson_matias.Forum.Hub.domain.curso.DadosCadastramentoCurso;
 import dev.alisson_matias.Forum.Hub.domain.curso.DadosDetalhamentoCurso;
 import dev.alisson_matias.Forum.Hub.domain.curso.RegistrarCurso;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CursosController {
 
     private final RegistrarCurso registrarCurso;
