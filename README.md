@@ -7,7 +7,7 @@
 <ul style="text-align: justify">
     <li>Este projeto utiliza o Java na versão <strong>21</strong>;</li>
     <li>O arquivo "application.properties" requer a configuração de variáveis de ambiente com chaves que tenham a mesma nomeclatura definida nele, e os valores personalizados de acordo com a sua necessidade.</li>
-    <img src="tutorial/application.properties.png">
+    <img src="tutorial/application.properties.png" alt="Imagem variáveis do application.properties">
     <li>Após a instalação das dependências requeridas, é possível executá-lo;</li>
     <li>Por padrão, a aplicação é executada na port 8080.</li>
     <li>É possível verificar a documentação da API através do caminho: <strong>http://host:port/swagger-ui.html</strong></li>
