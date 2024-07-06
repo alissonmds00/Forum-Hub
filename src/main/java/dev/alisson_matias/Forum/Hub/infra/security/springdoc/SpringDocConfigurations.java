@@ -13,10 +13,8 @@ public class SpringDocConfigurations {
     @Bean
     public OpenAPI customOpenAPI() {
         var mensagem = """
-API Rest da aplicação Forum Hub, contendo as funcionalidades de CRUD de cursos, tópicos, respostas e gerenciamento de usuário. 
+API Rest da aplicação Forum Hub, contendo as funcionalidades de CRUD de cursos, tópicos, respostas e gerenciamento de usuário.
 Desenvolvida por Alisson Matias
-
-
 OBS: para iniciar o uso e os testes, é necessário fazer o registro através da rota /registrar e em seguida, login na rota /login.
 """;
         return new OpenAPI()
