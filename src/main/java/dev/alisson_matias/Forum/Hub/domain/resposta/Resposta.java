@@ -26,6 +26,7 @@ public class Resposta {
     @JoinColumn(name = "autor_id")
     private Usuario autor;
     private String solucao;
+    private boolean ativo;
 
     public Resposta(String conteudo, Topico topico, Usuario autor) {
         this.id = null;
@@ -34,5 +35,10 @@ public class Resposta {
         this.dataDeCriacao = LocalDateTime.now();
         this.autor = autor;
         this.solucao = Solucao.SEM_RESPOSTA.toString();
+        this.ativo = true;
+    }
+
+    public void excluirResposta() {
+        this.ativo = false;
     }
 }

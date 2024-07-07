@@ -28,14 +28,16 @@ public class TopicosController {
     private final TokenService tokenService;
     private final RespostaRepository respostaRepository;
     private final RegistrarResposta registroDeResposta;
+    private final ArquivamentoDeTopico arquivamentoDeTopico;
 
     @Autowired
-    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService, RespostaRepository respostaRepository, RegistrarResposta registroDeResposta) {
+    public TopicosController(TopicoRepository repository, RegistroDeTopico registroDeTopico, TokenService tokenService, RespostaRepository respostaRepository, RegistrarResposta registroDeResposta, ArquivamentoDeTopico arquivamentoDeTopico) {
         this.repository = repository;
         this.registroDeTopico = registroDeTopico;
         this.respostaRepository = respostaRepository;
         this.tokenService = tokenService;
         this.registroDeResposta = registroDeResposta;
+        this.arquivamentoDeTopico = arquivamentoDeTopico;
     }
 
     @PostMapping
@@ -71,7 +73,7 @@ public class TopicosController {
         }
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<DadosDetalhamentoTopico> atualizarTopico(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
         try {
@@ -83,25 +85,15 @@ public class TopicosController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoTopico> excluirTopico(@PathVariable Long id) {
-        try {
-            var topico = repository.getReferenceById(id);
-            topico.excluirTopico();
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            throw new ValidacaoException("O tópico não foi encontrado.");
-        }
+    public ResponseEntity excluirTopico(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        var emailDoSolicitante = tokenService.getSubject(token);
+        arquivamentoDeTopico.arquivar(id, emailDoSolicitante);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("{id}/respostas")
-    @Transactional
-    public ResponseEntity<DadosDetalhamentoResposta> registrarResposta(@PathVariable Long id, @RequestBody DadosCadastramentoResposta dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token) {
-        var resposta = registroDeResposta.registrarResposta(id, dados.conteudo(), token);
-        var uri = uriBuilder.path("/topicos/{idTopico}/resposta{idResposta}").buildAndExpand(id, resposta.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
-    }
+    // Respostas
 
     @GetMapping("{idTopico}/respostas")
     public ResponseEntity<Page<DadosDetalhamentoResposta>> obterRespostasDoTopico(@PageableDefault Pageable page, @PathVariable Long idTopico) {
@@ -109,4 +101,13 @@ public class TopicosController {
         System.out.println(respostas);
         return ResponseEntity.ok(respostas);
     }
+
+    @PostMapping("{idTopico}/respostas")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoResposta> registrarResposta(@PathVariable Long idTopico, @RequestBody DadosCadastramentoResposta dados, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token) {
+        var resposta = registroDeResposta.registrarResposta(idTopico, dados.conteudo(), token);
+        var uri = uriBuilder.path("/topicos/{idTopico}/resposta{idResposta}").buildAndExpand(idTopico, resposta.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
+    }
+
 }
