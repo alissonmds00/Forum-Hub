@@ -4,6 +4,7 @@ import dev.alisson_matias.Forum.Hub.domain.resposta.ArquivarResposta;
 import dev.alisson_matias.Forum.Hub.domain.resposta.DadosDetalhamentoResposta;
 import dev.alisson_matias.Forum.Hub.domain.resposta.RespostaRepository;
 import dev.alisson_matias.Forum.Hub.infra.security.TokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/respostas")
+@SecurityRequirement(name = "bearer-key")
 public class RespostaController {
     private final RespostaRepository respostaRepository;
     private final TokenService tokenService;
