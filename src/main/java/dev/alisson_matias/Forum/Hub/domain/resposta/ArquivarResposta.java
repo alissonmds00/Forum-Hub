@@ -1,10 +1,16 @@
 package dev.alisson_matias.Forum.Hub.domain.resposta;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ArquivarResposta {
-    private RespostaRepository respostaRepository;
+    private final RespostaRepository respostaRepository;
+
+    @Autowired
+    public ArquivarResposta(RespostaRepository respostaRepository) {
+        this.respostaRepository = respostaRepository;
+    }
 
     public void arquivar(Long id, String emailAutor) {
         var resposta = respostaRepository.findByIdAndAtivoTrue(id);

@@ -6,6 +6,7 @@ import dev.alisson_matias.Forum.Hub.domain.resposta.RespostaRepository;
 import dev.alisson_matias.Forum.Hub.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,6 +33,7 @@ public class RespostaController {
     }
 
     @DeleteMapping("{id}")
+    @Transactional
     public ResponseEntity deletarResposta(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         var emailDoSolicitante = tokenService.getSubject(token);
         arquivarResposta.arquivar(id, emailDoSolicitante);
